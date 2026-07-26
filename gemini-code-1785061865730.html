@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ms Lê Hằng English</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #ff6b8b;
+            --primary-hover: #ff4770;
+            --secondary: #8854c0;
+            --accent-yellow: #fdcb6e;
+            --accent-teal: #00c9a7;
+            --correct: #00d26a;
+            --wrong: #ff4757;
+            --highlight: #fef08a;
+            --text-dark: #2d3436;
+            --text-muted: #636e72;
+            --border-radius: 16px;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; user-select: text; }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: linear-gradient(-45deg, #ff9a9e, #fecfef, #a1c4fd, #c2e9fb);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.4) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(255, 255, 255, 0.4) 0%, transparent 20%),
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Ctext x='10' y='30' font-size='22'%3E🎒%3C/text%3E%3Ctext x='70' y='40' font-size='20'%3E⭐%3C/text%3E%3Ctext x='30' y='90' font-size='22'%3E✏️%3C/text%3E%3Ctext x='80' y='100' font-size='20'%3E🏫%3C/text%3E%3C/svg%3E");
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(10px);
+            padding: 10px 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 100;
+            border-bottom: 3px solid var(--primary);
+        }
+
+        .header-title-container { display: flex; align-items: center; gap: 12px; }
+        .teacher-tag {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white; padding: 6px 16px; border-radius: 20px;
+            font-size: 0.95rem; font-weight: 800; letter-spacing: 0.5px;
+            box-shadow: 0 3px 6px rgba(255, 107, 139, 0.3);
+        }
+
+        .controls-bar { display: flex; align-items: center; gap: 12px; }
+
+        .tabs-container {
+            display: flex; gap: 6px; background: rgba(255, 255, 255, 0.6);
+            padding: 4px; border-radius: 14px;
+        }
+
+        .tab-btn {
+            border: none; background: transparent; padding: 6px 12px;
+            border-radius: 10px; font-weight: 800; font-size: 0.85rem;
+            color: var(--text-muted); cursor: pointer; transition: all 0.2s;
+        }
+
+        .tab-btn.active { background: white; color: var(--primary); box-shadow: 0 3px 8px rgba(0,0,0,0.1); }
+
+        .timer-badge {
+            background: #fff; border: 2px solid var(--primary); border-radius: 25px;
+            padding: 4px 12px; display: flex; align-items: center; gap: 6px;
+            font-weight: 800; color: var(--primary); box-shadow: 0 3px 0 var(--primary);
+        }
+        .btn-timer {
+            background: var(--primary); color: white; border: none; padding: 4px 10px;
+            border-radius: 12px; font-weight: 700; font-size: 0.8rem; cursor: pointer;
+            box-shadow: 0 2px 0 #d04a60; transition: all 0.2s;
+        }
+        .btn-timer:hover { transform: translateY(-1px); }
+
+        .progress-box {
+            display: flex; align-items: center; gap: 8px; background: white;
+            padding: 4px 10px; border-radius: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .progress-bar-bg { width: 70px; height: 10px; background: #dfe6e9; border-radius: 5px; overflow: hidden; }
+        .progress-bar-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent-teal), var(--correct)); transition: width 0.3s ease; }
+        .progress-text { font-weight: 800; font-size: 0.8rem; color: var(--accent-teal); }
+
+        .btn-submit-main {
+            background: linear-gradient(135deg, #00c9a7, #00d26a); color: white; border: none;
+            padding: 7px 16px; border-radius: 20px; font-weight: 900; font-size: 0.9rem;
+            cursor: pointer; box-shadow: 0 3px 0 #00997b; transition: all 0.2s;
+        }
+        .btn-submit-main:hover { transform: translateY(-2px); }
+
+        .main-container { display: flex; flex: 1; height: calc(100vh - 65px); overflow: hidden; padding: 12px; gap: 12px; }
+        .pane {
+            flex: 1; background: rgba(255, 255, 255, 0.93); backdrop-filter: blur(10px);
+            border-radius: var(--border-radius); box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            display: flex; flex-direction: column; overflow: hidden; border: 2px solid rgba(255,255,255,0.8);
+        }
+
+        .pane-header {
+            padding: 12px 20px; background: linear-gradient(135deg, rgba(255,107,139,0.1), rgba(136,84,192,0.1));
+            border-bottom: 2px solid #f0f0f0; display: flex; align-items: center; justify-content: space-between;
+        }
+        .pane-title { font-size: 1.1rem; font-weight: 800; color: var(--secondary); display: flex; align-items: center; gap: 8px; }
+        .pane-content { flex: 1; overflow-y: auto; padding: 20px; scroll-behavior: smooth; }
+
+        .passage-title { font-size: 1.25rem; font-weight: 900; color: var(--primary); margin-bottom: 15px; text-align: center; border-bottom: 2px dashed #fecfef; padding-bottom: 10px; }
+        .paragraph-card { background: #fff; border-radius: 14px; padding: 16px; margin-bottom: 15px; border: 1px solid #f0f0f0; box-shadow: 0 3px 10px rgba(0,0,0,0.03); position: relative; }
+        .paragraph-text { line-height: 1.8; font-size: 1.05rem; color: #2d3436; }
+        .user-highlight { background-color: var(--highlight); padding: 2px 4px; border-radius: 4px; }
+
+        .btn-translate {
+            background: #fbfaff; border: 1px dashed var(--secondary); color: var(--secondary);
+            border-radius: 12px; padding: 6px 14px; font-size: 0.85rem; font-weight: 800;
+            cursor: pointer; margin-top: 12px; display: inline-flex; align-items: center; gap: 6px; transition: all 0.2s;
+        }
+        .btn-translate:hover { background: #f0e6ff; transform: scale(1.02); }
+        .translation-box { display: none; margin-top: 12px; padding: 14px; background: #f8f5ff; border-left: 4px solid var(--secondary); border-radius: 8px; font-size: 0.95rem; color: #4a4a4a; line-height: 1.7; }
+
+        .glossary-container { margin-top: 25px; background: #fff; border-radius: 16px; padding: 18px; border: 2px solid #f0e6ff; box-shadow: 0 4px 15px rgba(0,0,0,0.04); }
+        .glossary-title { font-size: 1.05rem; font-weight: 800; color: var(--secondary); margin-bottom: 12px; }
+        .glossary-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+        .glossary-table th { background: #f0e6ff; color: var(--secondary); text-align: left; padding: 8px 12px; font-weight: 800; }
+        .glossary-table td { padding: 8px 12px; border-bottom: 1px solid #f0f0f0; }
+
+        .question-card { background: #fff; border-radius: 16px; padding: 18px; margin-bottom: 18px; border: 2px solid #f0f0f0; box-shadow: 0 4px 12px rgba(0,0,0,0.03); }
+        .question-header { font-weight: 800; font-size: 1.05rem; color: var(--text-dark); margin-bottom: 10px; display: flex; align-items: flex-start; gap: 10px; }
+        .q-number { background: var(--primary); color: white; border-radius: 8px; padding: 2px 8px; font-size: 0.85rem; flex-shrink: 0; }
+
+        .mc-options { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
+        .mc-option {
+            background: #f8f9fa; border: 2px solid #e9ecef; border-radius: 12px;
+            padding: 10px 14px; cursor: pointer; font-weight: 600;
+            display: flex; align-items: center; gap: 10px; transition: all 0.2s;
+            box-shadow: 0 3px 0 #dee2e6;
+        }
+        .mc-option:hover { transform: translateY(-2px); border-color: var(--primary); background: #fff; }
+        .mc-option.selected-correct { background: #e6f9f0 !important; border-color: var(--correct) !important; color: var(--correct) !important; box-shadow: 0 3px 0 #00b359 !important; }
+        .mc-option.selected-wrong { background: #ffeef0 !important; border-color: var(--wrong) !important; color: var(--wrong) !important; box-shadow: 0 3px 0 #e03b4a !important; animation: shake 0.4s ease; }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-6px); }
+            40%, 80% { transform: translateX(6px); }
+        }
+
+        .btn-locate { background: #fff4e6; color: #d97706; border: 1px solid #fde68a; padding: 5px 12px; border-radius: 8px; font-size: 0.82rem; font-weight: 800; cursor: pointer; margin-top: 10px; transition: all 0.2s; }
+        .btn-locate:hover { background: #fef3c7; transform: scale(1.03); }
+
+        .explanation-box { display: none; margin-top: 12px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px; font-size: 0.9rem; }
+        .exp-item { margin-bottom: 6px; line-height: 1.5; }
+        .exp-item strong { color: var(--secondary); }
+        .exp-synonym { background: #f1f5f9; padding: 4px 8px; border-radius: 6px; font-weight: 700; color: #475569; display: inline-block; margin-top: 4px; }
+
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); z-index: 1000; align-items: center; justify-content: center; }
+        .modal-card { background: white; border-radius: 24px; padding: 30px; width: 90%; max-width: 480px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
+        .modal-score { font-size: 3rem; font-weight: 900; color: var(--primary); margin: 15px 0; }
+        .btn-modal-close { background: var(--primary); color: white; border: none; padding: 10px 25px; border-radius: 16px; font-weight: 800; cursor: pointer; box-shadow: 0 4px 0 #d04a60; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-title-container">
+            <span class="teacher-tag">Ms Lê Hằng English</span>
+        </div>
+
+        <div class="controls-bar">
+            <div class="tabs-container">
+                <button class="tab-btn active" onclick="switchSection(8)">Sec VIII</button>
+                <button class="tab-btn" onclick="switchSection(9)">Sec IX</button>
+                <button class="tab-btn" onclick="switchSection(10)">Sec X</button>
+                <button class="tab-btn" onclick="switchSection(11)">Sec XI</button>
+                <button class="tab-btn" onclick="switchSection(12)">Sec XII</button>
+            </div>
+
+            <div class="timer-badge">
+                <span>⏱️</span>
+                <span id="timer-display">20:00</span>
+                <button class="btn-timer" id="btn-timer-toggle" onclick="toggleTimer()">TÍNH GIỜ</button>
+            </div>
+            <div class="progress-box">
+                <div class="progress-bar-bg"><div class="progress-bar-fill" id="progress-fill"></div></div>
+                <span class="progress-text" id="progress-text">0%</span>
+            </div>
+            <button class="btn-submit-main" onclick="submitTest()">NỘP BÀI 🚀</button>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <!-- Left Pane: Reading Passage -->
+        <div class="pane">
+            <div class="pane-header">
+                <div class="pane-title"><span>📖</span> READING PASSAGE</div>
+                <small style="color:var(--text-muted); font-weight:700;">💡 Bôi đen văn bản để highlight</small>
+            </div>
+            <div class="pane-content" id="passage-container">
+                <!-- Dynamic passage insertion -->
+            </div>
+        </div>
+
+        <!-- Right Pane: Questions -->
+        <div class="pane">
+            <div class="pane-header">
+                <div class="pane-title"><span>✏️</span> EXERCISES & EXPLANATIONS</div>
+            </div>
+            <div class="pane-content" id="questions-container">
+                <!-- Dynamic questions insertion -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal-overlay" id="results-modal">
+        <div class="modal-card">
+            <h2>🎉 KẾT QUẢ BÀI LÀM 🎉</h2>
+            <div class="modal-score" id="modal-score-display">0 / 0</div>
+            <div class="modal-comment" id="modal-comment-display">Cùng cố gắng hơn nhé!</div>
+            <button class="btn-modal-close" onclick="closeModal()">ĐÓNG & XEM LẠI BÀI</button>
+        </div>
+    </div>
+
+    <canvas id="confetti-canvas" style="position:fixed; top:0; left:0; width:100vw; height:100vh; pointer-events:none; z-index:2000;"></canvas>
+
+    <script>
+        const sectionsData = {
+            8: {
+                title: "Vinh's English Learning in Da Nang",
+                sentences: [
+                    { id: "s8_1", text: "Hi! I am Vinh. I come from Da Nang, Viet Nam." },
+                    { id: "s8_2", text: "I like English and I go to English club every day." },
+                    { id: "s8_3", text: "My friends like English, too." },
+                    { id: "s8_4", text: "It is very interesting to learn English." },
+                    { id: "s8_5", text: "My English teacher is great and funny." },
+                    { id: "s8_6", text: "She always makes our English lessons new and different." },
+                    { id: "s8_7", text: "A lot of tourists come to Da Nang every year, so we have more chances to practice our English." },
+                    { id: "s8_8", text: "This Saturday I am going to Han River with my parents to watch the international firework competition." },
+                    { id: "s8_9", text: "I hope I will meet many English people there." }
+                ],
+                translation: "Xin chào! Tớ là Vinh. Tớ đến từ Đà Nẵng, Việt Nam. Tớ thích tiếng Anh và tớ đến câu lạc bộ tiếng Anh mỗi ngày. Các bạn của tớ cũng thích tiếng Anh. Học tiếng Anh rất thú vị. Cô giáo tiếng Anh của tớ rất tuyệt vời và hài hước. Cô luôn làm cho các bài học tiếng Anh của chúng tớ mới mẻ và khác biệt. Rất nhiều khách du lịch đến Đà Nẵng mỗi năm, vì vậy chúng tớ có nhiều cơ hội hơn để thực hành tiếng Anh. Thứ Bảy này tớ sẽ đến Sông Hàn cùng bố mẹ để xem cuộc thi bắn pháo hoa quốc tế. Tớ hy vọng tớ sẽ gặp nhiều người Anh ở đó.",
+                glossary: [
+                    { w: "English club", pos: "n", m: "Câu lạc bộ tiếng Anh", syn: "Language club" },
+                    { w: "Interesting", pos: "adj", m: "Thú vị", syn: "Fascinating, fun" },
+                    { w: "Different", pos: "adj", m: "Khác biệt, mới lạ", syn: "Distinct, unique (>< same)" },
+                    { w: "Tourists", pos: "n", m: "Khách du lịch", syn: "Visitors, travelers" },
+                    { w: "Firework competition", pos: "n", m: "Cuộc thi pháo hoa", syn: "Pyrotechnics contest" }
+                ],
+                questions: [
+                    {
+                        id: 801, q: "1. Which subject does Vinh like?",
+                        opts: ["A. English", "B. Math", "C. Literature", "D. Music"],
+                        ans: "A", sentId: "s8_2",
+                        expAns: "A. English", expQuote: "I like English and I go to English club every day.", expTrans: "Tớ thích tiếng Anh và tớ đến câu lạc bộ tiếng Anh mỗi ngày.", expSyn: "like = like English"
+                    },
+                    {
+                        id: 802, q: "2. What does he do every day?",
+                        opts: ["A. Brushes his teeth", "B. goes to school", "C. goes to English club", "D. goes swimming"],
+                        ans: "C", sentId: "s8_2",
+                        expAns: "C. goes to English club", expQuote: "...and I go to English club every day.", expTrans: "...và tớ đến câu lạc bộ tiếng Anh mỗi ngày.", expSyn: "every day = go to English club"
+                    },
+                    {
+                        id: 803, q: "3. What does he think about learning English?",
+                        opts: ["A. It's boring", "B. It's fun", "C. It's interesting", "D. It's great"],
+                        ans: "C", sentId: "s8_4",
+                        expAns: "C. It's interesting", expQuote: "It is very interesting to learn English.", expTrans: "Học tiếng Anh rất thú vị.", expSyn: "learning English = interesting"
+                    },
+                    {
+                        id: 804, q: "4. The word 'different' in line 3 is OPPOSITE in meaning to",
+                        opts: ["A. same", "B. like", "C. difficult", "D. easy"],
+                        ans: "A", sentId: "s8_6",
+                        expAns: "A. same", expQuote: "She always makes our English lessons new and different.", expTrans: "Cô luôn làm bài học trở nên mới mẻ và khác biệt.", expSyn: "different (khác biệt) >< same (giống nhau)"
+                    },
+                    {
+                        id: 805, q: "5. Where is Vinh going to this Saturday?",
+                        opts: ["A. He is having a picnic in the park", "B. He is going to Han River.", "C. He is going to the cinema", "D. He is going to England."],
+                        ans: "B", sentId: "s8_8",
+                        expAns: "B. He is going to Han River.", expQuote: "This Saturday I am going to Han River with my parents...", expTrans: "Thứ Bảy này tớ sẽ đến Sông Hàn cùng bố mẹ...", expSyn: "going to this Saturday = going to Han River"
+                    },
+                    {
+                        id: 806, q: "6. What does the word 'there' in line 5 refer to?",
+                        opts: ["A. Da Nang", "B. English club", "C. Han River", "D. competition"],
+                        ans: "C", sentId: "s8_9",
+                        expAns: "C. Han River", expQuote: "This Saturday I am going to Han River... I hope I will meet many English people there.", expTrans: "...đến Sông Hàn... hy vọng gặp nhiều người Anh ở đó.", expSyn: "there = Han River"
+                    }
+                ]
+            },
+            9: {
+                title: "Vy and Her Friend Lan",
+                sentences: [
+                    { id: "s9_1", text: "I'm Vy. My close friend is Lan. She is very pretty." },
+                    { id: "s9_2", text: "She has short black hair and big brown eyes." },
+                    { id: "s9_3", text: "She is (1) ....... and hard-working but she is very funny." },
+                    { id: "s9_4", text: "She (2) ....... jokes and we all laugh." },
+                    { id: "s9_5", text: "She loves reading and (3) ....... short poems." },
+                    { id: "s9_6", text: "I like being with her. We often do our (4) ....... together and she helps me a lot." },
+                    { id: "s9_7", text: "This Saturday we're going to the Tay Ninh museum. Then we (5) ....... to the park. It's going to be fun." }
+                ],
+                translation: "Tớ là Vy. Bạn thân của tớ là Lan. Cậu ấy rất xinh xắn. Cậu ấy có mái tóc đen ngắn và đôi mắt to màu nâu. Cậu ấy thông minh và chăm chỉ nhưng lại rất hài hước. Cậu ấy kể chuyện đùa và tất cả chúng tớ đều cười. Cậu ấy thích đọc và viết những bài thơ ngắn. Tớ thích ở bên cậu ấy. Chúng tớ thường cùng nhau làm bài tập về nhà và cậu ấy giúp tớ rất nhiều. Thứ Bảy này chúng tớ sẽ đi bảo tàng Tây Ninh. Sau đó chúng tớ sẽ đi đến công viên. Sẽ rất vui đây.",
+                glossary: [
+                    { w: "Clever", pos: "adj", m: "Thông minh", syn: "Smart, intelligent" },
+                    { w: "Make jokes", pos: "v phrase", m: "Kể chuyện đùa", syn: "Tell funny stories" },
+                    { w: "Poems", pos: "n", m: "Các bài thơ", syn: "Verse, poetry" },
+                    { w: "Homework", pos: "n", m: "Bài tập về nhà", syn: "Schoolwork" }
+                ],
+                questions: [
+                    {
+                        id: 901, q: "1. She is (1) ...... and hard-working but she is very funny.",
+                        opts: ["A. clever", "B. lazy", "C. serious", "D. talkative"],
+                        ans: "A", sentId: "s9_3",
+                        expAns: "A. clever", expQuote: "She is clever and hard-working but she is very funny.", expTrans: "Cậu ấy thông minh và chăm chỉ nhưng lại rất hài hước.", expSyn: "clever = thông minh"
+                    },
+                    {
+                        id: 902, q: "2. She (2) ...... jokes and we all laugh.",
+                        opts: ["A. make", "B. is making", "C. making", "D. makes"],
+                        ans: "D", sentId: "s9_4",
+                        expAns: "D. makes", expQuote: "She makes jokes and we all laugh.", expTrans: "Cậu ấy kể chuyện đùa và tất cả chúng tớ đều cười.", expSyn: "make jokes = cụm từ cố định"
+                    },
+                    {
+                        id: 903, q: "3. She loves reading and (3) ...... short poems.",
+                        opts: ["A. writing", "B. writes", "C. to write", "D. write"],
+                        ans: "A", sentId: "s9_5",
+                        expAns: "A. writing", expQuote: "She loves reading and writing short poems.", expTrans: "Cậu ấy thích đọc và viết những bài thơ ngắn.", expSyn: "loves reading and writing (cấu trúc song song)"
+                    },
+                    {
+                        id: 904, q: "4. We often do our (4) ...... together and she helps me a lot.",
+                        opts: ["A. housework", "B. homework", "C. laundry", "D. cooking"],
+                        ans: "B", sentId: "s9_6",
+                        expAns: "B. homework", expQuote: "We often do our homework together and she helps me a lot.", expTrans: "Chúng tớ thường làm bài tập về nhà cùng nhau...", expSyn: "do homework = làm bài tập"
+                    },
+                    {
+                        id: 905, q: "5. Then we (5) ...... to the park.",
+                        opts: ["A. is going", "B. is go", "C. are going", "D. go"],
+                        ans: "C", sentId: "s9_7",
+                        expAns: "C. are going", expQuote: "Then we are going to the park.", expTrans: "Sau đó chúng tớ sẽ đi đến công viên.", expSyn: "we are going = cấu trúc be going to"
+                    }
+                ]
+            },
+            10: {
+                title: "Van's New House",
+                sentences: [
+                    { id: "s10_1", text: "How are you getting on?" },
+                    { id: "s10_2", text: "We are going to move to the new house next weekend." },
+                    { id: "s10_3", text: "My uncle and my aunt live near there so I can play with my cousins." },
+                    { id: "s10_4", text: "There are eight rooms in my new house." },
+                    { id: "s10_5", text: "The living room is the biggest in my house." },
+                    { id: "s10_6", text: "I like my bedroom very much because it looks to a lake, it is light and cool." },
+                    { id: "s10_7", text: "There is a small bed and a big bookshelf in my room." },
+                    { id: "s10_8", text: "I will put all my books on the shelf. I will keep my room clean and tidy." },
+                    { id: "s10_9", text: "What about you? Tell me about your house in your next e-mail. Love, Van" }
+                ],
+                translation: "Dạo này bạn thế nào? Cuối tuần tới gia đình tớ sẽ chuyển sang nhà mới. Chú và cô tớ sống gần đó nên tớ có thể chơi với các anh chị em họ. Có tám phòng trong ngôi nhà mới của tớ. Phòng khách là phòng rộng nhất nhà tớ. Tớ rất thích phòng ngủ của mình vì nó nhìn ra hồ, sáng sủa và mát mẻ. Có một chiếc giường nhỏ và một giá sách lớn trong phòng tớ. Tớ sẽ xếp tất cả sách lên kệ. Tớ sẽ giữ phòng mình luôn sạch sẽ và ngăn nắp.",
+                glossary: [
+                    { w: "Move", pos: "v", m: "Chuyển nhà", syn: "Relocate" },
+                    { w: "Cousins", pos: "n", m: "Anh chị em họ", syn: "Relative children" },
+                    { w: "Bookshelf", pos: "n", m: "Giá sách", syn: "Bookcase" },
+                    { w: "Tidy", pos: "adj", m: "Ngăn nắp", syn: "Neat, orderly (>< messy)" }
+                ],
+                questions: [
+                    {
+                        id: 1001, q: "1. How many rooms are there in Van's new house?",
+                        opts: ["A. 5", "B. 6", "C. 7", "D. 8"],
+                        ans: "D", sentId: "s10_4",
+                        expAns: "D. 8", expQuote: "There are eight rooms in my new house.", expTrans: "Có tám phòng trong ngôi nhà mới của tớ.", expSyn: "eight = 8"
+                    },
+                    {
+                        id: 1002, q: "2. What is the biggest room in her house?",
+                        opts: ["A. Her bedroom", "B. the kitchen", "C. The living room", "D. Her uncle's bedroom"],
+                        ans: "C", sentId: "s10_5",
+                        expAns: "C. The living room", expQuote: "The living room is the biggest in my house.", expTrans: "Phòng khách là phòng rộng nhất trong nhà tớ.", expSyn: "biggest room = living room"
+                    },
+                    {
+                        id: 1003, q: "3. Why does she like her bedroom?",
+                        opts: ["A. Because it looks to a lake", "B. Because it is cold", "C. Because it is small", "D. Because it is big."],
+                        ans: "A", sentId: "s10_6",
+                        expAns: "A. Because it looks to a lake", expQuote: "I like my bedroom very much because it looks to a lake...", expTrans: "Tớ rất thích phòng ngủ vì nó nhìn ra hồ...", expSyn: "like bedroom because = looks to a lake"
+                    },
+                    {
+                        id: 1004, q: "4. What does the word 'it' in line 4 refer to?",
+                        opts: ["A. my house", "B. my bedroom", "C. my living room", "D. a bookshelf"],
+                        ans: "B", sentId: "s10_6",
+                        expAns: "B. my bedroom", expQuote: "I like my bedroom very much because it looks to a lake...", expTrans: "Tớ thích phòng ngủ vì nó (phòng ngủ) nhìn ra hồ...", expSyn: "it = my bedroom"
+                    },
+                    {
+                        id: 1005, q: "5. What are there in her room?",
+                        opts: ["A. There are books in her room", "B. There is a big lake in her room", "C. There are many lights in her room", "D. There is a small bed and a big bookshelf"],
+                        ans: "D", sentId: "s10_7",
+                        expAns: "D. There is a small bed and a big bookshelf", expQuote: "There is a small bed and a big bookshelf in my room.", expTrans: "Có một chiếc giường nhỏ và một giá sách lớn trong phòng tớ.", expSyn: "in her room = small bed and big bookshelf"
+                    },
+                    {
+                        id: 1006, q: "6. The word 'tidy' in line 5 is OPPOSITE in meaning to",
+                        opts: ["A. cozy", "B. messy", "C. homely", "D. modern"],
+                        ans: "B", sentId: "s10_8",
+                        expAns: "B. messy", expQuote: "I will keep my room clean and tidy.", expTrans: "Tớ sẽ giữ phòng mình luôn sạch sẽ và ngăn nắp.", expSyn: "tidy (ngăn nắp) >< messy (bừa bộn)"
+                    }
+                ]
+            },
+            11: {
+                title: "Jack the Teacher in London",
+                sentences: [
+                    { id: "s11_1", text: "Jack is my best friend. He is a teacher." },
+                    { id: "s11_2", text: "He's teaching in a school in London." },
+                    { id: "s11_3", text: "Every morning he gets up at about 7 o'clock, has breakfast and a cup of coffee." },
+                    { id: "s11_4", text: "Then he leaves for work." },
+                    { id: "s11_5", text: "The school is far from his home, so he can't walk there. He must go by bus." },
+                    { id: "s11_6", text: "He has lunch at a restaurant nearby." },
+                    { id: "s11_7", text: "In the afternoon he works until 5 or 5:30 and then he goes home." },
+                    { id: "s11_8", text: "He doesn't work on Saturdays or Sundays. He goes to the cinema or theatre." },
+                    { id: "s11_9", text: "He is married and he has a son. He loves his family. They are very happy." }
+                ],
+                translation: "Jack là bạn thân nhất của tớ. Cậu ấy là một giáo viên. Cậu ấy đang dạy học tại một trường học ở Luân Đôn. Mỗi sáng cậu ấy thức dậy vào khoảng 7 giờ, ăn sáng và uống một tách cà phê. Sau đó cậu ấy đi làm. Trường học cách xa nhà nên cậu ấy không thể đi bộ đến đó. Cậu ấy phải đi bằng xe buýt. Cậu ấy ăn trưa tại một nhà hàng gần đó. Vào buổi chiều cậu ấy làm việc đến 5 giờ hoặc 5:30 rồi về nhà. Cậu ấy không làm việc vào Thứ Bảy hay Chủ Nhật. Cậu ấy đi xem phim hoặc đi rạp hát. Cậu ấy đã lập gia đình và có một con trai. Cậu ấy rất yêu gia đình mình. Họ rất hạnh phúc.",
+                glossary: [
+                    { w: "Leave for", pos: "v phrase", m: "Rời đi đâu / Đi làm", syn: "Go to" },
+                    { w: "Far from", pos: "prep phrase", m: "Xa khỏi", syn: "Distant from" },
+                    { w: "Theatre", pos: "n", m: "Rạp hát / Nhà hát", syn: "Playhouse" },
+                    { w: "Delighted", pos: "adj", m: "Vui mừng, hạnh phúc", syn: "Happy, pleased" }
+                ],
+                questions: [
+                    {
+                        id: 1101, q: "1. What's Jack's job?",
+                        opts: ["A. a student", "B. a teacher", "C. a writer", "D. a doctor"],
+                        ans: "B", sentId: "s11_1",
+                        expAns: "B. a teacher", expQuote: "Jack is my best friend. He is a teacher.", expTrans: "Jack là bạn thân nhất của tớ. Cậu ấy là giáo viên.", expSyn: "job = teacher"
+                    },
+                    {
+                        id: 1102, q: "2. What's his favourite drink?",
+                        opts: ["A. milk", "B. tea", "C. coffee", "D. lemonade"],
+                        ans: "C", sentId: "s11_3",
+                        expAns: "C. coffee", expQuote: "...has breakfast and a cup of coffee.", expTrans: "...ăn sáng và uống một tách cà phê.", expSyn: "drink = coffee"
+                    },
+                    {
+                        id: 1103, q: "3. What does the phrase 'leave for' in line 2 means?",
+                        opts: ["A. run to", "B. swim to", "C. fly to", "D. go to"],
+                        ans: "D", sentId: "s11_4",
+                        expAns: "D. go to", expQuote: "Then he leaves for work.", expTrans: "Sau đó cậu ấy đi làm.", expSyn: "leave for = go to"
+                    },
+                    {
+                        id: 1104, q: "4. How often does he work?",
+                        opts: ["A. every day", "B. five days a week", "C. six days a week", "D. four days a week"],
+                        ans: "B", sentId: "s11_8",
+                        expAns: "B. five days a week", expQuote: "He doesn't work on Saturdays or Sundays.", expTrans: "Cậu ấy không làm việc vào Thứ Bảy hay Chủ Nhật.", expSyn: "doesn't work on weekend = works 5 days a week"
+                    },
+                    {
+                        id: 1105, q: "5. What does he do at the weekend?",
+                        opts: ["A. He teaches his students", "B. He goes to the cinema or theatre", "C. He comes back home.", "D. He watches television."],
+                        ans: "B", sentId: "s11_8",
+                        expAns: "B. He goes to the cinema or theatre", expQuote: "He doesn't work on Saturdays or Sundays. He goes to the cinema or theatre.", expTrans: "Cuối tuần cậu ấy đi xem phim hoặc đi rạp hát.", expSyn: "weekend = Saturdays or Sundays"
+                    },
+                    {
+                        id: 1106, q: "6. What does the word 'they' in line 5 refer to?",
+                        opts: ["A. Saturdays", "B. Sundays", "C. his family", "D. he and his son"],
+                        ans: "C", sentId: "s11_9",
+                        expAns: "C. his family", expQuote: "He loves his family. They are very happy.", expTrans: "Cậu ấy yêu gia đình mình. Họ rất hạnh phúc.", expSyn: "they = his family"
+                    },
+                    {
+                        id: 1107, q: "7. The word 'happy' in line 5 is CLOSEST in meaning to",
+                        opts: ["A. delighted", "B. sad", "C. memorable", "D. bored"],
+                        ans: "A", sentId: "s11_9",
+                        expAns: "A. delighted", expQuote: "They are very happy.", expTrans: "Họ rất hạnh phúc.", expSyn: "happy (hạnh phúc) = delighted (vui sướng)"
+                    }
+                ]
+            },
+            12: {
+                title: "Linh's Trip to Nha Trang",
+                sentences: [
+                    { id: "s12_1", text: "Hi. I am Linh. I (1) ....... in Hanoi with my family but I am having a good time at Nha Trang Beach now." },
+                    { id: "s12_2", text: "The beach is beautiful and clean." },
+                    { id: "s12_3", text: "The (2) ....... is cool and dry. The sun is shining brightly." },
+                    { id: "s12_4", text: "I love the food here, especially the seafood is cheap but delicious." },
+                    { id: "s12_5", text: "(3) ....... Nha Trang, (4) ....... are friendly and helpful. I like Nha Trang very much." }
+                ],
+                translation: "Xin chào. Tớ là Linh. Tớ sống ở Hà Nội cùng gia đình nhưng hiện tại tớ đang có khoảng thời gian tuyệt vời ở biển Nha Trang. Bãi biển ở đây đẹp và sạch sẽ. Thời tiết mát mẻ và khô ráo. Mặt trời đang tỏa nắng rực rỡ. Tớ thích đồ ăn ở đây, đặc biệt hải sản rất rẻ mà lại ngon. Ở Nha Trang, con người thân thiện và hay giúp đỡ. Tớ rất thích Nha Trang.",
+                glossary: [
+                    { w: "Shining brightly", pos: "v phrase", m: "Tỏa nắng rực rỡ", syn: "Radiant, sunny" },
+                    { w: "Seafood", pos: "n", m: "Hải sản", syn: "Ocean food" },
+                    { w: "Delicious", pos: "adj", m: "Ngon miệng", syn: "Tasty, yummy" },
+                    { w: "Helpful", pos: "adj", m: "Hay giúp đỡ", syn: "Supportive, kind" }
+                ],
+                questions: [
+                    {
+                        id: 1201, q: "1. I (1) ........ in Hanoi with my family...",
+                        opts: ["A. like", "B. live", "C. liking", "D. stay"],
+                        ans: "B", sentId: "s12_1",
+                        expAns: "B. live", expQuote: "I live in Hanoi with my family...", expTrans: "Tớ sống ở Hà Nội cùng gia đình...", expSyn: "live in = sinh sống ở"
+                    },
+                    {
+                        id: 1202, q: "2. The (2) ........ is cool and dry.",
+                        opts: ["A. weather", "B. season", "C. sun", "D. moon"],
+                        ans: "A", sentId: "s12_3",
+                        expAns: "A. weather", expQuote: "The weather is cool and dry.", expTrans: "Thời tiết mát mẻ và khô ráo.", expSyn: "cool and dry = weather"
+                    },
+                    {
+                        id: 1203, q: "3. (3) ........ Nha Trang, people are friendly...",
+                        opts: ["A. For", "B. On", "C. In", "D. At"],
+                        ans: "C", sentId: "s12_5",
+                        expAns: "C. In", expQuote: "In Nha Trang, people are friendly...", expTrans: "Ở Nha Trang, mọi người rất thân thiện...", expSyn: "In + Tên thành phố"
+                    },
+                    {
+                        id: 1204, q: "4. ... (4) ........ are friendly and helpful.",
+                        opts: ["A. food", "B. drink", "C. beaches", "D. people"],
+                        ans: "D", sentId: "s12_5",
+                        expAns: "D. people", expQuote: "...In Nha Trang, people are friendly and helpful.", expTrans: "...Ở Nha Trang, con người rất thân thiện...", expSyn: "friendly and helpful = people"
+                    }
+                ]
+            }
+        };
+
+        let currentSection = 8;
+        let userAnswers = {};
+        let timerSeconds = 20 * 60;
+        let timerInterval = null;
+        let isTimerRunning = false;
+
+        window.onload = () => {
+            renderSection(8);
+        };
+
+        function switchSection(secNum) {
+            currentSection = secNum;
+            document.querySelectorAll('.tab-btn').forEach((btn, idx) => {
+                btn.classList.toggle('active', [8,9,10,11,12][idx] === secNum);
+            });
+            renderSection(secNum);
+        }
+
+        function renderSection(secNum) {
+            const data = sectionsData[secNum];
+            
+            // Passage
+            let pContainer = document.getElementById('passage-container');
+            let pTextHtml = data.sentences.map(s => `<span id="${s.id}">${s.text} </span>`).join('');
+            
+            let gRows = data.glossary.map(g => `
+                <tr>
+                    <td style="font-weight:800; color:var(--primary);">${g.w}</td>
+                    <td style="font-style:italic;">${g.pos}</td>
+                    <td>${g.m}</td>
+                    <td style="color:var(--secondary); font-weight:700;">${g.syn}</td>
+                </tr>
+            `).join('');
+
+            pContainer.innerHTML = `
+                <h2 class="passage-title">${data.title}</h2>
+                <div class="paragraph-card">
+                    <p class="paragraph-text">${pTextHtml}</p>
+                    <button class="btn-translate" onclick="toggleTranslation('trans-${secNum}')"><span>🌟</span> Mở dịch đoạn này</button>
+                    <div class="translation-box" id="trans-${secNum}">${data.translation}</div>
+                </div>
+                <div class="glossary-container">
+                    <div class="glossary-title">📚 BẢNG TỪ VỰNG HỌC THUẬT (GLOSSARY)</div>
+                    <table class="glossary-table">
+                        <thead>
+                            <tr><th>Từ vựng</th><th>Loại từ</th><th>Nghĩa tiếng Việt</th><th>Từ đồng nghĩa</th></tr>
+                        </thead>
+                        <tbody>${gRows}</tbody>
+                    </table>
+                </div>
+            `;
+
+            // Questions
+            let qContainer = document.getElementById('questions-container');
+            let qHtml = data.questions.map(q => {
+                let optsHtml = q.opts.map(opt => {
+                    let letter = opt.trim().charAt(0);
+                    return `<div class="mc-option" onclick="checkMC(${q.id}, '${letter}', this)">${opt}</div>`;
+                }).join('');
+
+                return `
+                    <div class="question-card" id="q-card-${q.id}">
+                        <div class="question-header"><span class="q-number">Câu ${q.id % 100}</span><div>${q.q}</div></div>
+                        <div class="mc-options">${optsHtml}</div>
+                        <button class="btn-locate" onclick="locateSentence('${q.sentId}', ${q.id})">📍 Dẫn chứng trong bài đọc</button>
+                        <div class="explanation-box" id="exp-${q.id}">
+                            <div class="exp-item"><strong>1. ĐÁP ÁN:</strong> ${q.expAns}</div>
+                            <div class="exp-item"><strong>2. ĐOẠN CHỨA ĐÁP ÁN:</strong> "${q.expQuote}"</div>
+                            <div class="exp-item"><strong>3. DỊCH NGHĨA:</strong> ${q.expTrans}</div>
+                            <div class="exp-synonym">💡 KEYWORD MAPPING: ${q.expSyn}</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            qContainer.innerHTML = qHtml;
+        }
+
+        function toggleTranslation(id) {
+            const el = document.getElementById(id);
+            el.style.display = el.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function checkMC(qId, selected, element) {
+            const parent = element.parentElement;
+            parent.querySelectorAll('.mc-option').forEach(el => el.classList.remove('selected-correct', 'selected-wrong'));
+
+            userAnswers[qId] = selected;
+            
+            let qData = null;
+            for (let s in sectionsData) {
+                let found = sectionsData[s].questions.find(q => q.id === qId);
+                if (found) { qData = found; break; }
+            }
+
+            if (selected === qData.ans) {
+                element.classList.add('selected-correct');
+                playAudio('correct');
+                triggerConfetti();
+            } else {
+                element.classList.add('selected-wrong');
+                playAudio('wrong');
+                parent.querySelectorAll('.mc-option').forEach(el => {
+                    if (el.innerText.trim().startsWith(qData.ans)) el.classList.add('selected-correct');
+                });
+            }
+
+            document.getElementById(`exp-${qId}`).style.display = 'block';
+            updateProgress();
+        }
+
+        function locateSentence(sentId, qId) {
+            document.querySelectorAll('.paragraph-card span').forEach(s => s.style.backgroundColor = 'transparent');
+            const sent = document.getElementById(sentId);
+            if (sent) {
+                sent.style.backgroundColor = 'var(--highlight)';
+                sent.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+            document.getElementById(`exp-${qId}`).style.display = 'block';
+        }
+
+        function updateProgress() {
+            let totalQ = 0;
+            for (let s in sectionsData) totalQ += sectionsData[s].questions.length;
+            let answered = Object.keys(userAnswers).length;
+            let pct = Math.round((answered / totalQ) * 100);
+            document.getElementById('progress-fill').style.width = pct + '%';
+            document.getElementById('progress-text').innerText = pct + '%';
+        }
+
+        function toggleTimer() {
+            const btn = document.getElementById('btn-timer-toggle');
+            if (isTimerRunning) {
+                clearInterval(timerInterval);
+                isTimerRunning = false;
+                btn.innerText = "TÍNH GIỜ";
+            } else {
+                isTimerRunning = true;
+                btn.innerText = "TẠM DỪNG";
+                timerInterval = setInterval(() => {
+                    timerSeconds--;
+                    const mins = Math.floor(timerSeconds / 60);
+                    const secs = timerSeconds % 60;
+                    document.getElementById('timer-display').innerText = 
+                        `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+                    if (timerSeconds <= 0) {
+                        clearInterval(timerInterval);
+                        alert("⏱️ Đã hết giờ làm bài. Bạn vẫn có thể tiếp tục làm nha!");
+                    }
+                }, 1000);
+            }
+        }
+
+        function submitTest() {
+            let totalQ = 0;
+            let correct = 0;
+
+            for (let s in sectionsData) {
+                sectionsData[s].questions.forEach(q => {
+                    totalQ++;
+                    if (userAnswers[q.id] === q.ans) correct++;
+                });
+            }
+
+            document.getElementById('modal-score-display').innerText = `${correct} / ${totalQ}`;
+            let msg = correct === totalQ ? "🌟 TUYỆT ĐỐI 100%! BẠN LÀ THIÊN TÀI! 🌟" : "🎉 LÀM TỐT LẮM! HÃY ÔN LẠI VÀ HOÀN THÀNH HẾT NHÉ!";
+            document.getElementById('modal-comment-display').innerText = msg;
+            document.getElementById('results-modal').style.display = 'flex';
+            triggerConfetti();
+        }
+
+        function closeModal() { document.getElementById('results-modal').style.display = 'none'; }
+
+        let audioCtx = null;
+        function playAudio(type) {
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain); gain.connect(audioCtx.destination);
+            if (type === 'correct') {
+                osc.type = 'sine'; osc.frequency.setValueAtTime(523.25, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(659.25, audioCtx.currentTime + 0.15);
+                gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+                osc.start(); osc.stop(audioCtx.currentTime + 0.3);
+            } else {
+                osc.type = 'sawtooth'; osc.frequency.setValueAtTime(220, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(130.81, audioCtx.currentTime + 0.3);
+                gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+                osc.start(); osc.stop(audioCtx.currentTime + 0.3);
+            }
+        }
+
+        document.addEventListener('mouseup', () => {
+            const sel = window.getSelection();
+            if (!sel || sel.isCollapsed || !sel.rangeCount) return;
+            const range = sel.getRangeAt(0);
+            const container = document.getElementById('passage-container');
+            if (container.contains(range.commonAncestorContainer)) {
+                const span = document.createElement('span');
+                span.className = 'user-highlight';
+                try { range.surroundContents(span); } catch(e){}
+                sel.removeAllRanges();
+            }
+        });
+
+        function triggerConfetti() {
+            const canvas = document.getElementById('confetti-canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+            const particles = [];
+            const colors = ['#ff6b8b', '#8854c0', '#fdcb6e', '#00c9a7', '#00d26a'];
+            for (let i = 0; i < 50; i++) {
+                particles.push({
+                    x: canvas.width / 2, y: canvas.height / 2,
+                    vx: (Math.random() - 0.5) * 12, vy: (Math.random() - 0.5) * 12 - 3,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    size: Math.random() * 8 + 4, life: 100
+                });
+            }
+            function render() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                let alive = false;
+                particles.forEach(p => {
+                    if (p.life > 0) {
+                        alive = true; p.x += p.vx; p.y += p.vy; p.vy += 0.2; p.life -= 2;
+                        ctx.fillStyle = p.color; ctx.beginPath();
+                        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fill();
+                    }
+                });
+                if (alive) requestAnimationFrame(render);
+            }
+            render();
+        }
+    </script>
+</body>
+</html>
